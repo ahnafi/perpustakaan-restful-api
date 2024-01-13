@@ -78,4 +78,57 @@
    - `PUT /api/admin/users/{userId}` - Memperbarui informasi pengguna berdasarkan ID.
    - `DELETE /api/admin/users/{userId}` - Menghapus pengguna berdasarkan ID.
 
-Pastikan untuk menyesuaikan rancangan ini sesuai dengan kebutuhan spesifik dan tujuan proyek Anda. Juga, pastikan untuk menerapkan kontrol akses dan otentikasi yang sesuai, terutama pada rute-rute yang melibatkan operasi CRUD atau fitur administratif.
+
+
+<!-- user and admin -->
+### Routes untuk Pengguna (User):
+
+1. **Registrasi Pengguna:**
+   - `POST /api/users/register` - Pengguna baru dapat mendaftar dengan menyertakan informasi pendaftaran seperti username, password, dsb.
+
+2. **Login Pengguna:**
+   - `POST /api/users/login` - Pengguna dapat melakukan login dengan menyertakan informasi otentikasi (username dan password).
+
+3. **Logout Pengguna:**
+   - `POST /api/users/logout` - Pengguna dapat melakukan logout.
+
+4. **Pengelolaan Peminjaman Buku:**
+   - `POST /api/users/{userId}/borrows` - Pengguna dapat meminjam buku dengan menyertakan detail peminjaman.
+   - `GET /api/users/{userId}/borrows` - Mendapatkan daftar peminjaman buku oleh pengguna.
+   - `PUT /api/users/{userId}/borrows/{borrowId}` - Mengembalikan buku berdasarkan ID peminjaman.
+
+5. **Pengelolaan Ulasan dan Peringkat:**
+   - `POST /api/users/{userId}/reviews` - Pengguna dapat menambahkan ulasan dan peringkat untuk buku tertentu.
+   - `GET /api/users/{userId}/reviews` - Mendapatkan daftar ulasan dan peringkat yang ditulis oleh pengguna.
+
+6. **Informasi Pengguna:**
+   - `GET /api/users/{userId}` - Mendapatkan informasi pengguna berdasarkan ID.
+   - `PUT /api/users/{userId}` - Memperbarui informasi pengguna berdasarkan ID.
+
+### Routes untuk Admin:
+
+1. **Registrasi Admin (Opsional):**
+   - `POST /api/admin/register` - Admin baru dapat mendaftar dengan menyertakan informasi pendaftaran seperti username, password, dsb. (Opsional, tergantung pada kebutuhan)
+
+2. **Login Admin:**
+   - `POST /api/admin/login` - Admin dapat melakukan login dengan menyertakan informasi otentikasi (username dan password).
+
+3. **Logout Admin:**
+   - `POST /api/admin/logout` - Admin dapat melakukan logout.
+
+4. **Pengelolaan Buku:**
+   - `POST /api/admin/books` - Admin dapat menambahkan buku baru ke perpustakaan.
+   - `GET /api/admin/books` - Mendapatkan daftar semua buku (opsional: dengan filter atau pencarian).
+   - `GET /api/admin/books/{bookId}` - Mendapatkan detail buku berdasarkan ID.
+   - `PUT /api/admin/books/{bookId}` - Memperbarui informasi buku berdasarkan ID.
+   - `DELETE /api/admin/books/{bookId}` - Menghapus buku berdasarkan ID.
+
+5. **Pengelolaan Kategori:**
+   - `POST /api/admin/categories` - Admin dapat menambahkan kategori baru.
+   - `GET /api/admin/categories` - Mendapatkan daftar semua kategori.
+   - `GET /api/admin/categories/{categoryId}` - Mendapatkan detail kategori berdasarkan ID.
+   - `PUT /api/admin/categories/{categoryId}` - Memperbarui informasi kategori berdasarkan ID.
+   - `DELETE /api/admin/categories/{categoryId}` - Menghapus kategori berdasarkan ID.
+
+6. **Statistik Perpustakaan:**
+   - `GET /api/admin/statistics` - Mendapatkan statistik perpustakaan, seperti buku yang paling banyak dibaca atau penggunaan sistem secara umum.
