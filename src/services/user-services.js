@@ -1,5 +1,6 @@
 import ResponseError from "../error/response-error.js";
 import {
+  getUserValidation,
   loginUserValidation,
   registerUserValidation,
 } from "../validation/user-validation.js";
@@ -76,4 +77,17 @@ const login = async (request) => {
   });
 };
 
-export default { register, login };
+const logout = async (username) => {
+  username = validate(getUserValidation, username);
+
+  return prisma.user.update({
+    where: {
+      username: username,
+    },
+    data: {
+      token: null,
+    },
+  });
+};
+
+export default { register, login, logout };

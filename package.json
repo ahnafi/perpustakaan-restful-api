@@ -5,13 +5,14 @@
   "main": "main.js",
   "type": "module",
   "scripts": {
-    "test": "jest",
+    "test": "jest -i",
     "start": "node main.js"
   },
   "jest": {
     "transform": {
       "^.+\\.[t|j]sx?$": "babel-jest"
-    }
+    },
+    "verbose": true
   },
   "keywords": [
     "perpustakaan",

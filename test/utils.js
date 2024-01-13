@@ -15,6 +15,7 @@ export const createUser = async () => {
       username: "test",
       name: "test",
       password: await bcrypt.hash("password", 10),
+      token: "test",
     },
   });
 };
