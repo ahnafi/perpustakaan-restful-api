@@ -1,0 +1,121 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Perpustakaan Digital API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/api/books": {
+      "get": {
+        "summary": "Mendapatkan daftar semua buku",
+        "responses": {
+          "200": {
+            "description": "Sukses"
+          }
+        }
+      },
+      "post": {
+        "summary": "Menambahkan buku baru",
+        "responses": {
+          "201": {
+            "description": "Buku berhasil ditambahkan"
+          }
+        },
+        "requestBody": {
+          "description": "Objek buku yang akan ditambahkan",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "Judul buku"
+                  },
+                  "author": {
+                    "type": "string",
+                    "description": "Penulis buku"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Deskripsi buku"
+                  }
+                },
+                "required": ["title", "author"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/books/{id}": {
+      "get": {
+        "summary": "Mendapatkan detail buku berdasarkan ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID buku"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses"
+          },
+          "404": {
+            "description": "Buku tidak ditemukan"
+          }
+        }
+      },
+      "put": {
+        "summary": "Memperbarui informasi buku berdasarkan ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID buku"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Buku berhasil diperbarui"
+          },
+          "404": {
+            "description": "Buku tidak ditemukan"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Menghapus buku berdasarkan ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID buku"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Buku berhasil dihapus"
+          },
+          "404": {
+            "description": "Buku tidak ditemukan"
+          }
+        }
+      }
+    }
+  }
+}
