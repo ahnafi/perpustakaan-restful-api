@@ -1,6 +1,6 @@
 import supertest from "supertest";
 import { app } from "../src/app/app.js";
-import { deleteAllUsers } from "./utils.js";
+import { createUser, deleteAllUsers } from "./utils.js";
 
 describe("create user api post /api/users/register", () => {
   afterEach(async () => {
@@ -37,5 +37,38 @@ describe("create user api post /api/users/register", () => {
 
     expect(user.body.errors).toBeDefined();
     expect(user.status).toBe(400);
+  });
+});
+
+describe("login user api POST /api/users/login", () => {
+  beforeEach(async () => {
+    await createUser();
+  });
+  afterEach(async () => {
+    await deleteAllUsers();
+  });
+  it("should can loggin ", async () => {
+    const user = await supertest(app).post("/api/users/login").send({
+      username: "test",
+      password: "password",
+    });
+
+    expect(user.status).toBe(200);
+  });
+  it("should cant loggin karena password salah", async () => {
+    const user = await supertest(app).post("/api/users/login").send({
+      username: "test",
+      password: "passwordajdinef",
+    });
+
+    expect(user.status).toBe(401);
+  });
+  it("should cant loggin karena user ga ada", async () => {
+    const user = await supertest(app).post("/api/users/login").send({
+      username: "testasd",
+      password: "passwordajdinef",
+    });
+
+    expect(user.status).toBe(401);
   });
 });

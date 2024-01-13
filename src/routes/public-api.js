@@ -10,3 +10,4 @@ publicRoutes.get("/", (req, res) => {
 
 // user api
 publicRoutes.post("/api/users/register", userController.register);
+publicRoutes.post("/api/users/login", userController.login);
