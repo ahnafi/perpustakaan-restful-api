@@ -10,3 +10,4 @@ privateRoutes.use(authMiddleware);
 // user routes
 privateRoutes.get("/api/users/current", userController.get);
 privateRoutes.post("/api/users/logout", userController.logout);
+privateRoutes.put("/api/users/current", userController.update);

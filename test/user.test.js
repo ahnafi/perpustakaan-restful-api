@@ -113,6 +113,7 @@ describe("get user api GET /api/users/current", () => {
       .set("Authorization", "test");
 
     expect(user.status).toBe(200);
+    expect(user.body.data.username).toBe("test");
   });
   it("should cant get karena ga ada token", async () => {
     const user = await supertest(app).get("/api/users/current");
@@ -125,5 +126,57 @@ describe("get user api GET /api/users/current", () => {
       .set("Authorization", "testaaaaaaaa");
 
     expect(user.status).toBe(401);
+  });
+});
+describe("update user api PUT /api/users/current", () => {
+  beforeEach(async () => {
+    await createUser();
+  });
+  afterEach(async () => {
+    await deleteAllUsers();
+  });
+  it("should can update", async () => {
+    const user = await supertest(app)
+      .put("/api/users/current")
+      .set("Authorization", "test")
+      .send({
+        name: "kuntuludin",
+        password: "abrakadabra",
+      });
+
+    expect(user.status).toBe(200);
+    expect(user.body.data.username).toBe("test");
+    expect(user.body.data.name).toBe("kuntuludin");
+  });
+  it("should cant update karena ga ada token", async () => {
+    const user = await supertest(app).put("/api/users/current").send({
+      name: "kuntuludin",
+      password: "abrakadabra",
+    });
+
+    expect(user.status).toBe(401);
+  });
+  it("should cant update karena token salah", async () => {
+    const user = await supertest(app)
+      .put("/api/users/current")
+      .set("Authorization", "testaaaaaaaa")
+      .send({
+        name: "kuntuludin",
+        password: "abrakadabra",
+      });
+
+    expect(user.status).toBe(401);
+  });
+  it("should cant update karena username tidakbisa di update", async () => {
+    const user = await supertest(app)
+      .put("/api/users/current")
+      .set("Authorization", "test")
+      .send({
+        username: "test",
+        password: "abrakadabra",
+      });
+
+    expect(user.status).toBe(400);
+    console.log(user.body)
   });
 });

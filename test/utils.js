@@ -4,13 +4,13 @@ import bcrypt from "bcrypt";
 export const deleteAllUsers = async () => {
   return prisma.user.deleteMany({
     where: {
-      name: "test",
+      username: "test",
     },
   });
 };
 
 export const createUser = async () => {
-  return prisma.user.create({
+  await prisma.user.create({
     data: {
       username: "test",
       name: "test",
