@@ -102,8 +102,8 @@
    - `GET /api/users/{userId}/reviews` - Mendapatkan daftar ulasan dan peringkat yang ditulis oleh pengguna.
 
 6. **Informasi Pengguna:**
-   - `GET /api/users/{userId}` - Mendapatkan informasi pengguna berdasarkan ID.
-   - `PUT /api/users/{userId}` - Memperbarui informasi pengguna berdasarkan ID.
+   - `GET /api/users/current` - Mendapatkan informasi pengguna berdasarkan ID.
+   - `PUT /api/users/current` - Memperbarui informasi pengguna berdasarkan ID.
 
 ### Routes untuk Admin:
 

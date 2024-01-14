@@ -27,7 +27,7 @@ const login = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
   try {
-    const request = req.user.username;
+    const request = req.user.username;//from auth
     await userServices.logout(request);
 
     res.status(200).json({
@@ -38,8 +38,20 @@ const logout = async (req, res, next) => {
   }
 };
 
+const get = async (req, res, next) => {
+  try {
+    const username = req.user.username; //from auth
+    const result = await userServices.get(username);
+
+    res.status(200).json({ data: result });
+  } catch (error) {
+    next();
+  }
+};
+
 export default {
   register,
   login,
   logout,
+  get,
 };

@@ -100,3 +100,30 @@ describe("logout user api POST /api/users/logout", () => {
     expect(user.status).toBe(401);
   });
 });
+describe("get user api GET /api/users/current", () => {
+  beforeEach(async () => {
+    await createUser();
+  });
+  afterEach(async () => {
+    await deleteAllUsers();
+  });
+  it("should can get", async () => {
+    const user = await supertest(app)
+      .get("/api/users/current")
+      .set("Authorization", "test");
+
+    expect(user.status).toBe(200);
+  });
+  it("should cant get karena ga ada token", async () => {
+    const user = await supertest(app).get("/api/users/current");
+
+    expect(user.status).toBe(401);
+  });
+  it("should cant get karena token salah", async () => {
+    const user = await supertest(app)
+      .get("/api/users/current")
+      .set("Authorization", "testaaaaaaaa");
+
+    expect(user.status).toBe(401);
+  });
+});

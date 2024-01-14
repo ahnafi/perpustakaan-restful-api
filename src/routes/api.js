@@ -8,4 +8,5 @@ export const privateRoutes = express.Router();
 privateRoutes.use(authMiddleware);
 
 // user routes
+privateRoutes.get("/api/users/current", userController.get);
 privateRoutes.post("/api/users/logout", userController.logout);
