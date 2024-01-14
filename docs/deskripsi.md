@@ -29,3 +29,5 @@ Proyek ini adalah implementasi RESTful API untuk sebuah perpustakaan digital. Da
    - **Log Aktivitas:** Sistem menyimpan log aktivitas pengguna, termasuk peminjaman, pengembalian, dan perubahan lainnya di perpustakaan.
 
 Proyek ini memberikan solusi manajemen perpustakaan yang efisien dan terstruktur melalui RESTful API, memungkinkan pengembang untuk mengintegrasikan fungsionalitas perpustakaan digital ke dalam berbagai aplikasi atau platform.
+
+https://chat.openai.com/share/474ab6b9-c921-44cd-a413-d6c23c0c366e
