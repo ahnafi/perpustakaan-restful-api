@@ -15,3 +15,4 @@ publicRoutes.post("/api/users/login", userController.login);
 
 // admin api
 publicRoutes.post("/api/admin/register", adminController.register);
+publicRoutes.post("/api/admin/login", adminController.login);

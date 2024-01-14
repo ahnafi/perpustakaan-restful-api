@@ -1,6 +1,6 @@
 import supertest from "supertest";
 import { app } from "../src/app/app.js";
-import { createAdmin, deleteAllUsers } from "./utils.js";
+import { createAdmin, createUser, deleteAllUsers } from "./utils.js";
 import { logger } from "../src/app/logging.js";
 
 describe("create admin api post /api/admin/register", () => {
@@ -14,7 +14,6 @@ describe("create admin api post /api/admin/register", () => {
       name: "test",
       password: "password",
     });
-    logger.info(admin.body);
 
     expect(admin.body.data.username).toBe("test");
     expect(admin.body.data.role).toBe("ADMIN");
@@ -39,5 +38,55 @@ describe("create admin api post /api/admin/register", () => {
 
     expect(admin.body.errors).toBeDefined();
     expect(admin.status).toBe(400);
+  });
+});
+
+describe("login admin api POST /api/admin/login", () => {
+  beforeEach(async () => {
+    await createAdmin();
+  });
+  afterEach(async () => {
+    await deleteAllUsers();
+  });
+  it("should can loggin ", async () => {
+    const user = await supertest(app).post("/api/admin/login").send({
+      username: "test",
+      password: "password",
+    });
+    expect(user.status).toBe(200);
+    expect(user.body.data.token).toBeDefined();
+  });
+  it("should cant loggin karena password salah", async () => {
+    const user = await supertest(app).post("/api/admin/login").send({
+      username: "test",
+      password: "passwordajdinef",
+    });
+
+    expect(user.status).toBe(401);
+  });
+  it("should cant loggin karena admin ga ada", async () => {
+    const user = await supertest(app).post("/api/admin/login").send({
+      username: "testasd",
+      password: "passwordajdinef",
+    });
+
+    expect(user.status).toBe(401);
+  });
+});
+
+describe("login admin api POST /api/admin/login", () => {
+  beforeEach(async () => {
+    await createUser();
+  });
+  afterEach(async () => {
+    await deleteAllUsers();
+  });
+  it("should cant loggin karena user bukan admin", async () => {
+    const user = await supertest(app).post("/api/admin/login").send({
+      username: "test",
+      password: "password",
+    });
+
+    expect(user.status).toBe(401);
   });
 });
