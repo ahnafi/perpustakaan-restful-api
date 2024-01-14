@@ -166,3 +166,6 @@
 - `GET /api/users/current`
 - `PUT /api/users/current`
 
+<!-- admin  -->
+
+- `POST /api/admin/register`

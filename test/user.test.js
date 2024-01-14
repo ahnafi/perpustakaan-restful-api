@@ -177,6 +177,5 @@ describe("update user api PUT /api/users/current", () => {
       });
 
     expect(user.status).toBe(400);
-    console.log(user.body)
   });
 });
