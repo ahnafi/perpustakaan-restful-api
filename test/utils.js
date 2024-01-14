@@ -16,6 +16,19 @@ export const createUser = async () => {
       name: "test",
       password: await bcrypt.hash("password", 10),
       token: "test",
+      role: "USER",
+    },
+  });
+};
+
+export const createAdmin = async () => {
+  await prisma.user.create({
+    data: {
+      username: "test",
+      name: "test",
+      password: await bcrypt.hash("password", 10),
+      token: "test",
+      role: "ADMIN",
     },
   });
 };

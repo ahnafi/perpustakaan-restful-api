@@ -1,5 +1,6 @@
 import express from "express";
 import userController from "../controller/user-controller.js";
+import adminController from "../controller/admin-controller.js";
 
 export const publicRoutes = express.Router();
 
@@ -11,3 +12,6 @@ publicRoutes.get("/", (req, res) => {
 // user api
 publicRoutes.post("/api/users/register", userController.register);
 publicRoutes.post("/api/users/login", userController.login);
+
+// admin api
+publicRoutes.post("/api/admin/register", adminController.register);
