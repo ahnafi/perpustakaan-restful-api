@@ -170,3 +170,4 @@
 
 - `POST /api/admin/register`
 - `POST /api/admin/login`
+- `POST /api/admin/logout`

@@ -24,4 +24,16 @@ const login = async (req, res, next) => {
   }
 };
 
-export default { register, login };
+const logout = async (req, res, next) => {
+  try {
+    const user = req.user;
+    await adminServices.logout(user);
+    res.status(200).json({
+      data: "OK",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { register, login, logout };

@@ -3,6 +3,7 @@ import { prisma } from "../app/database.js";
 import { validate } from "../validation/validate.js";
 import ResponseError from "../error/response-error.js";
 import {
+  getUserValidation,
   loginUserValidation,
   registerUserValidation,
 } from "../validation/user-validation.js";
@@ -44,6 +45,7 @@ const login = async (request) => {
   const checkUserInDatabase = await prisma.user.findUnique({
     where: {
       username: request.username,
+      role: "ADMIN",
     },
     select: {
       password: true,
@@ -59,7 +61,7 @@ const login = async (request) => {
   if (checkUserInDatabase.role != "ADMIN") {
     throw new ResponseError(401, "username or password is wrong");
   }
-  
+
   const checkPassword = await bcrypt.compare(
     request.password,
     checkUserInDatabase.password
@@ -84,7 +86,25 @@ const login = async (request) => {
   });
 };
 
+const logout = async (user) => {
+  user.username = validate(getUserValidation, user.username);
+
+  if (user.role != "ADMIN") {
+    throw new ResponseError(401, "unauthorized");
+  }
+  return prisma.user.update({
+    where: {
+      username: user.username,
+      role: "ADMIN",
+    },
+    data: {
+      token: null,
+    },
+  });
+};
+
 export default {
   register,
   login,
+  logout,
 };

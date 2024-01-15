@@ -90,3 +90,46 @@ describe("login admin api POST /api/admin/login", () => {
     expect(user.status).toBe(401);
   });
 });
+
+describe("logout admin api POST /api/admin/logout", () => {
+  beforeEach(async () => {
+    await createAdmin();
+  });
+  afterEach(async () => {
+    await deleteAllUsers();
+  });
+  it("should can logout", async () => {
+    const user = await supertest(app)
+      .post("/api/admin/logout")
+      .set("Authorization", "test");
+
+    expect(user.status).toBe(200);
+  });
+  it("should cant logout karena ga ada token", async () => {
+    const user = await supertest(app).post("/api/admin/logout");
+
+    expect(user.status).toBe(401);
+  });
+  it("should cant logout karena token salah", async () => {
+    const user = await supertest(app)
+      .post("/api/admin/logout")
+      .set("Authorization", "testaaaaaaaa");
+
+    expect(user.status).toBe(401);
+  });
+});
+describe("logout admin api POST /api/admin/logout", () => {
+  beforeEach(async () => {
+    await createUser();
+  });
+  afterEach(async () => {
+    await deleteAllUsers();
+  });
+  it("should cant logout karena bukan admin", async () => {
+    const user = await supertest(app)
+      .post("/api/admin/logout")
+      .set("Authorization", "test");
+
+    expect(user.status).toBe(401);
+  });
+});
