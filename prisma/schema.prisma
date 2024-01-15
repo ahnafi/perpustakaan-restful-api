@@ -24,3 +24,24 @@ enum Role {
   USER
   ADMIN
 }
+
+model Book {
+  id           Int     @id @default(autoincrement())
+  title        String  @db.VarChar(100)
+  author       String  @db.VarChar(100)
+  description  String? @db.VarChar(250)
+  totalQty     Int     @default(0) // Jumlah total buku (termasuk yang sedang dipinjam)
+  availableQty Int     @default(0) // Jumlah buku yang tersedia untuk dipinjam
+
+  categories Category[]
+
+  @@map("books")
+}
+
+model Category {
+  id           Int    @id @default(autoincrement())
+  categoryName String @db.VarChar(100)
+  books        Book[]
+
+  @@map("category")
+}

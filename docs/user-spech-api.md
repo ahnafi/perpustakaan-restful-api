@@ -1,6 +1,9 @@
+# USER API SPECH
+
+### REGISTER USER API
 - `POST /api/users/register`
 
-  body
+  request body
 
   ```json
   {
@@ -10,7 +13,7 @@
   }
   ```
 
-  200
+  response success 200
 
   ```json
   {
@@ -21,7 +24,7 @@
   }
   ```
 
-  400
+  response error 
 
   ```json
   {
@@ -29,9 +32,11 @@
   }
   ```
 
+### LOGIN USER API
+
 - `POST /api/users/login`
 
-  body
+  request body
 
   ```json
   {
@@ -40,7 +45,7 @@
   }
   ```
 
-  200
+  response success 200
 
   ```json
   {
@@ -48,7 +53,7 @@
   }
   ```
 
-  400
+  response error 
 
   ```json
   {
@@ -56,11 +61,13 @@
   }
   ```
 
+### LOGOUT USER API
+
 - `POST /api/users/logout`
 
   - authorization
 
-  200
+  response success 200
 
   ```json
   {
@@ -68,7 +75,7 @@
   }
   ```
 
-  400
+  response error 
 
   ```json
   {
@@ -76,9 +83,11 @@
   }
   ```
 
+### GET USER API 
+
 - `GET /api/users/current`
 
-  200
+  response success 200
 
   ```json
   {
@@ -89,7 +98,7 @@
   }
   ```
 
-  400
+  response error 
 
   ```json
   {
@@ -97,11 +106,13 @@
   }
   ```
 
+### UPDATE USER API
+
 - `PUT /api/users/current`
 
   - authorization
 
-  body
+  request body
 
   ```json
   {
@@ -110,7 +121,7 @@
   }
   ```
 
-  200
+  response success 200
 
   ```json
   {
@@ -121,7 +132,7 @@
   }
   ```
 
-  400
+  response error 
 
   ```json
   {

@@ -3,16 +3,12 @@
 1. **Pengelolaan Buku:**
 
    - `POST /api/books` - Menambahkan buku baru
-   - `GET /api/books` - Mendapatkan daftar semua buku
-   - `GET /api/books/:id` - Mendapatkan detail buku berdasarkan ID
    - `PUT /api/books/:id` - Memperbarui informasi buku berdasarkan ID
    - `DELETE /api/books/:id` - Menghapus buku berdasarkan ID
 
 2. **Pengelolaan Kategori:**
 
    - `POST /api/categories` - Menambahkan kategori baru
-   - `GET /api/categories` - Mendapatkan daftar semua kategori
-   - `GET /api/categories/:id` - Mendapatkan detail kategori berdasarkan ID
    - `PUT /api/categories/:id` - Memperbarui informasi kategori berdasarkan ID
    - `DELETE /api/categories/:id` - Menghapus kategori berdasarkan ID
 
