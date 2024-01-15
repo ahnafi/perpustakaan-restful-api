@@ -32,3 +32,23 @@ export const createAdmin = async () => {
     },
   });
 };
+
+export const deleteAllBook = async () => {
+  await prisma.book.deleteMany({
+    where: {
+      title: "test",
+    },
+  });
+};
+
+export const createBook = async () => {
+  await prisma.book.create({
+    data: {
+      title: "test",
+      author: "sy",
+      totalQty: 10,
+      availableQty: 10,
+      description: "desc",
+    },
+  });
+};
