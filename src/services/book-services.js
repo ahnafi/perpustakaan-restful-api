@@ -81,7 +81,30 @@ const update = async (admin, idBook, request) => {
   });
 };
 
+const remove = async (admin, idBook) => {
+  idBook = validate(getBookValidation, idBook);
+
+  if (admin.role != "ADMIN") throw new ResponseError(401, "unauthorized");
+
+  const checkBookInDatabase = await prisma.book.findUnique({
+    where: {
+      id: idBook,
+    },
+  });
+
+  if (!checkBookInDatabase) {
+    throw new ResponseError(404, "book is not found");
+  }
+
+  return prisma.book.delete({
+    where: {
+      id: idBook,
+    },
+  });
+};
+
 export default {
   create,
   update,
+  remove,
 };

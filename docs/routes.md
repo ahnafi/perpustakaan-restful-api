@@ -167,3 +167,9 @@
 - `POST /api/admin/register`
 - `POST /api/admin/login`
 - `POST /api/admin/logout`
+
+<!-- books -->
+
+- `POST /api/books`
+- `PUT /api/books/:idBook`
+- `DELETE /api/books/:idBook`

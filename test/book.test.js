@@ -202,3 +202,57 @@ describe("update books api PUT /api/books/:idBook", () => {
     expect(newBook.body.errors).toBeDefined();
   });
 });
+describe("delete books api DELETE /api/books/:idBook", () => {
+  beforeEach(async () => {
+    await createAdmin();
+  });
+  afterEach(async () => {
+    await deleteAllBook();
+    await deleteAllUsers();
+  });
+
+  it("should can delete book ", async () => {
+    const book = await createBook();
+    const rmBook = await supertest(app)
+      .delete("/api/books/" + book.id)
+      .set("Authorization", "test");
+
+    expect(rmBook.status).toBe(200);
+    expect(rmBook.body.data).toBeDefined();
+  });
+  it("should cant delete book karena buku tidak ada ", async () => {
+    const book = await createBook();
+    const rmBook = await supertest(app)
+      .delete("/api/books/" + book.id + 1)
+      .set("Authorization", "test");
+
+    expect(rmBook.status).toBe(404);
+    expect(rmBook.body.errors).toBeDefined();
+  });
+  it("should cant delete book karena tidak login ", async () => {
+    const book = await createBook();
+    const rmBook = await supertest(app).delete("/api/books/" + book.id + 1);
+    // .set("Authorization", "test");
+
+    expect(rmBook.status).toBe(401);
+    expect(rmBook.body.errors).toBeDefined();
+  });
+});
+describe("delete books api DELETE /api/books/:idBook", () => {
+  beforeEach(async () => {
+    await createUser();
+  });
+  afterEach(async () => {
+    await deleteAllBook();
+    await deleteAllUsers();
+  });
+  it("should cant delete book karena user biasa ", async () => {
+    const book = await createBook();
+    const rmBook = await supertest(app)
+      .delete("/api/books/" + book.id)
+      .set("Authorization", "test");
+
+    expect(rmBook.status).toBe(401);
+    expect(rmBook.body.errors).toBeDefined();
+  });
+});

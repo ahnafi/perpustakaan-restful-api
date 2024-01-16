@@ -28,7 +28,21 @@ const update = async (req, res, next) => {
   }
 };
 
+const remove = async (req, res, next) => {
+  try {
+    const admin = req.user;
+    const idBook = req.params.idBook;
+    await bookServices.remove(admin, idBook);
+    res.status(200).json({
+      data: "OK",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   create,
   update,
+  remove,
 };
