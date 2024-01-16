@@ -12,4 +12,5 @@ adminRoutes.use(authMiddleware);
 adminRoutes.post("/api/admin/logout", adminController.logout);
 
 // book routes
-adminRoutes.post("/api/books",bookController.create)
+adminRoutes.post("/api/books", bookController.create);
+adminRoutes.put("/api/books/:idBook", bookController.update);

@@ -2,6 +2,7 @@ import supertest from "supertest";
 import { prisma } from "./../src/app/database.js";
 import {
   createAdmin,
+  createBook,
   createUser,
   deleteAllBook,
   deleteAllUsers,
@@ -110,5 +111,94 @@ describe("create book api POST /api/books", () => {
 
     expect(book.status).toBe(401);
     logger.info(book.body);
+  });
+});
+
+describe("update books api PUT /api/books/:idBook", () => {
+  beforeAll(async () => {
+    await createAdmin();
+  });
+  afterEach(async () => {
+    await deleteAllBook();
+  });
+  afterAll(async () => {
+    await deleteAllUsers();
+  });
+
+  it("should can update book ", async () => {
+    const oldBook = await createBook();
+
+    const newBook = await supertest(app)
+      .put("/api/books/" + oldBook.id)
+      .set("Authorization", "test")
+      .send({
+        author: "slebew",
+        totalQty: 50,
+        availableQty: 40,
+        description: "ini buku testing",
+      });
+
+    expect(newBook.status).toBe(200);
+    expect(newBook.body.data.author).toBe("slebew");
+    expect(newBook.body.data.totalQty).toBe(50);
+  });
+  it("should cant update book karena id tidak ada", async () => {
+    const oldBook = await createBook();
+
+    const newBook = await supertest(app)
+      .put("/api/books/" + oldBook.id + 1)
+      .set("Authorization", "test")
+      .send({
+        author: "slebew",
+        totalQty: 50,
+        availableQty: 40,
+        description: "ini buku testing",
+      });
+
+    expect(newBook.status).toBe(404);
+    expect(newBook.body.errors).toBeDefined();
+  });
+  it("should cant update book karena tidak login", async () => {
+    const oldBook = await createBook();
+
+    const newBook = await supertest(app)
+      .put("/api/books/" + oldBook.id)
+      // .set("Authorization", "test")
+      .send({
+        author: "slebew",
+        totalQty: 50,
+        availableQty: 40,
+        description: "ini buku testing",
+      });
+
+    expect(newBook.status).toBe(401);
+    expect(newBook.body.errors).toBeDefined();
+  });
+});
+
+describe("update books api PUT /api/books/:idBook", () => {
+  beforeEach(async () => {
+    await createUser();
+  });
+  afterEach(async () => {
+    await deleteAllBook();
+    await deleteAllUsers();
+  });
+
+  it("should cant update book karena bukan admin", async () => {
+    const oldBook = await createBook();
+
+    const newBook = await supertest(app)
+      .put("/api/books/" + oldBook.id)
+      .set("Authorization", "test")
+      .send({
+        author: "slebew",
+        totalQty: 50,
+        availableQty: 40,
+        description: "ini buku testing",
+      });
+
+    expect(newBook.status).toBe(401);
+    expect(newBook.body.errors).toBeDefined();
   });
 });

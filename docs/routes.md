@@ -3,8 +3,8 @@
 1. **Pengelolaan Buku:**
 
    - `POST /api/books` - Menambahkan buku baru
-   - `PUT /api/books/:id` - Memperbarui informasi buku berdasarkan ID
-   - `DELETE /api/books/:id` - Menghapus buku berdasarkan ID
+   - `PUT /api/books/:idBook` - Memperbarui informasi buku berdasarkan ID
+   - `DELETE /api/books/:idBook` - Menghapus buku berdasarkan ID
 
 2. **Pengelolaan Kategori:**
 

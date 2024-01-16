@@ -1,14 +1,16 @@
 import ResponseError from "../error/response-error.js";
-import { createBookValidation } from "../validation/book-validation.js";
+import {
+  createBookValidation,
+  getBookValidation,
+  updateBookValidation,
+} from "../validation/book-validation.js";
 import { validate } from "./../validation/validate.js";
 import { prisma } from "./../app/database.js";
 
 const create = async (admin, request) => {
   request = validate(createBookValidation, request);
 
-  if (admin.role != "ADMIN") {
-    throw new ResponseError(401, "unauthorized");
-  }
+  if (admin.role != "ADMIN") throw new ResponseError(401, "unauthorized");
 
   const checkBookInDatabase = await prisma.book.findFirst({
     where: {
@@ -39,6 +41,47 @@ const create = async (admin, request) => {
   });
 };
 
+const update = async (admin, idBook, request) => {
+  idBook = validate(getBookValidation, idBook);
+  request = validate(updateBookValidation, request);
+
+  if (admin.role != "ADMIN") throw new ResponseError(401, "unauthorized");
+
+  const checkBookInDatabase = await prisma.book.findUnique({
+    where: {
+      id: idBook,
+    },
+  });
+
+  if (!checkBookInDatabase) {
+    throw new ResponseError(404, "book is not found");
+  }
+
+  const book = {};
+
+  if (request.title) book.title = request.title;
+  if (request.author) book.author = request.author;
+  if (request.description) book.description = request.description;
+  if (request.totalQty) book.totalQty = request.totalQty;
+  if (request.availableQty) book.availableQty = request.availableQty;
+
+  return prisma.book.update({
+    where: {
+      id: idBook,
+    },
+    data: book,
+    select: {
+      id: true,
+      title: true,
+      author: true,
+      description: true,
+      totalQty: true,
+      availableQty: true,
+    },
+  });
+};
+
 export default {
   create,
+  update,
 };

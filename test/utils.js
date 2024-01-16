@@ -10,7 +10,7 @@ export const deleteAllUsers = async () => {
 };
 
 export const createUser = async () => {
-  await prisma.user.create({
+  return prisma.user.create({
     data: {
       username: "test",
       name: "test",
@@ -22,7 +22,7 @@ export const createUser = async () => {
 };
 
 export const createAdmin = async () => {
-  await prisma.user.create({
+  return prisma.user.create({
     data: {
       username: "test",
       name: "test",
@@ -34,7 +34,7 @@ export const createAdmin = async () => {
 };
 
 export const deleteAllBook = async () => {
-  await prisma.book.deleteMany({
+  return prisma.book.deleteMany({
     where: {
       title: "test",
     },
@@ -42,7 +42,7 @@ export const deleteAllBook = async () => {
 };
 
 export const createBook = async () => {
-  await prisma.book.create({
+  return prisma.book.create({
     data: {
       title: "test",
       author: "sy",

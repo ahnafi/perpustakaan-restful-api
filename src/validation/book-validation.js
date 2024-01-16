@@ -7,4 +7,14 @@ const createBookValidation = Joi.object({
   totalQty: Joi.number().positive().optional(),
 });
 
-export { createBookValidation };
+const getBookValidation = Joi.number().min(0).positive().integer().required();
+
+const updateBookValidation = Joi.object({
+  title: Joi.string().max(100).optional(),
+  author: Joi.string().max(100).optional(),
+  description: Joi.string().max(250).optional(),
+  totalQty: Joi.number().positive().optional(),
+  availableQty: Joi.number().positive().optional(),
+});
+
+export { createBookValidation, getBookValidation, updateBookValidation };
