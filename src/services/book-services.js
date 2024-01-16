@@ -2,6 +2,7 @@ import ResponseError from "../error/response-error.js";
 import {
   createBookValidation,
   getBookValidation,
+  searchBookValidation,
   updateBookValidation,
 } from "../validation/book-validation.js";
 import { validate } from "./../validation/validate.js";
@@ -124,6 +125,41 @@ const get = async (idBook) => {
 
 const search = async (request) => {
   // title? ,author? ,  totalqty , availableqty , page
+  request = validate(searchBookValidation, request);
+
+  const skip = (request.page - 1) * request.size;
+
+  const filters = [];
+
+  if (request.title) filters.push({ title: { contains: request.title } });
+  if (request.author) filters.push({ author: { contains: request.author } });
+  if (request.totalQty)
+    filters.push({ totalQty: { contains: request.totalQty } });
+  if (request.availableQty)
+    filters.push({ availableQty: { contains: request.availableQty } });
+
+  const books = await prisma.book.findMany({
+    where: {
+      AND: filters,
+    },
+    take: request.size,
+    skip: skip,
+  });
+
+  const count = await prisma.book.count({
+    where: {
+      AND: filters,
+    },
+  });
+
+  return {
+    data: books,
+    paging: {
+      page: request.page,
+      total_item: count,
+      total_page: Math.ceil(count / request.size),
+    },
+  };
 };
 
 export default {

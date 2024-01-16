@@ -21,4 +21,5 @@ publicRoutes.post("/api/admin/register", adminController.register);
 publicRoutes.post("/api/admin/login", adminController.login);
 
 // book api
-publicRoutes.get("/api/public/books/:idBook",bookController.get)
+publicRoutes.get("/api/public/books/:idBook", bookController.get);
+publicRoutes.get("/api/public/books", bookController.search);

@@ -285,3 +285,27 @@ describe("get book api GET /api/public/books/:idBook", () => {
     // expect(result.body.data.title).toBe("test");
   });
 });
+
+describe("search books api GET /api/public/books", () => {
+  beforeEach(async () => {
+    await createBook();
+    await createBook();
+    await createBook();
+  });
+  afterEach(async () => {
+    await deleteAllBook();
+  });
+  it("should can search all", async () => {
+    const books = await supertest(app).get("/api/public/books");
+
+    expect(books.status).toBe(200);
+    console.info(books.body);
+  });
+  it("should can search by title author totalqty availableqty", async () => {
+    const books = await supertest(app).get(
+      "/api/public/books?title=test&size=3"
+    );
+    expect(books.status).toBe(200);
+    console.info(books.body);
+  });
+});
