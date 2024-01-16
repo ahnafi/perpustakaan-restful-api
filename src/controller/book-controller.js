@@ -1,4 +1,4 @@
-import bookServices from "../services/book-services";
+import bookServices from "../services/book-services.js";
 
 const create = async (req, res, next) => {
   try {
@@ -41,8 +41,21 @@ const remove = async (req, res, next) => {
   }
 };
 
+const get = async (req, res, next) => {
+  try {
+    const idBook = req.params.idBook;
+    const result = await bookServices.get(idBook);
+    res.status(200).json({
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   create,
   update,
   remove,
+  get,
 };

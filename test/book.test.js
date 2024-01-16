@@ -256,3 +256,32 @@ describe("delete books api DELETE /api/books/:idBook", () => {
     expect(rmBook.body.errors).toBeDefined();
   });
 });
+
+describe("get book api GET /api/public/books/:idBook", () => {
+  beforeEach(async () => {});
+  afterEach(async () => {
+    await deleteAllBook();
+  });
+
+  it("should can get book by id", async () => {
+    const book = await createBook();
+    const result = await supertest(app).get("/api/public/books/" + book.id);
+
+    expect(result.status).toBe(200);
+    expect(result.body.data.title).toBe("test");
+  });
+  it("should cant get book karena buku tidak ada", async () => {
+    const book = await createBook();
+    const result = await supertest(app).get("/api/public/books/" + book.id + 1);
+
+    expect(result.status).toBe(404);
+    // expect(result.body.data.title).toBe("test");
+  });
+  it("should cant get book karena id tidak ada", async () => {
+    const book = await createBook();
+    const result = await supertest(app).get("/api/public/books/");
+
+    expect(result.status).toBe(401);
+    // expect(result.body.data.title).toBe("test");
+  });
+});

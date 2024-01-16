@@ -21,7 +21,7 @@
 1. **Daftar Buku:**
 
    - `GET /api/public/books` - Mendapatkan daftar buku untuk pengguna umum
-   - `GET /api/public/books/:id` - Mendapatkan detail buku berdasarkan ID
+   - `GET /api/public/books/:idBook` - Mendapatkan detail buku berdasarkan ID
 
 2. **Daftar Kategori:**
 

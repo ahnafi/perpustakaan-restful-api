@@ -103,8 +103,33 @@ const remove = async (admin, idBook) => {
   });
 };
 
+const get = async (idBook) => {
+  idBook = validate(getBookValidation, idBook);
+
+  const checkBookInDatabase = await prisma.book.findUnique({
+    where: {
+      id: idBook,
+    },
+    include: {
+      categories: true,
+    },
+  });
+
+  if (!checkBookInDatabase) {
+    throw new ResponseError(404, "book is not found");
+  }
+
+  return checkBookInDatabase;
+};
+
+const search = async (request) => {
+  // title? ,author? ,  totalqty , availableqty , page
+};
+
 export default {
   create,
   update,
   remove,
+  search,
+  get,
 };
