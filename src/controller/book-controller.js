@@ -4,8 +4,8 @@ const create = async (req, res, next) => {
   try {
     const admin = req.user;
     const request = req.body;
-    const result = await bookServices.create(admin, request);
 
+    let result = await bookServices.create(admin, request, req.files?.image);
     res.status(200).json({
       data: result,
     });

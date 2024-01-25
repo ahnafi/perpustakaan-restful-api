@@ -173,3 +173,5 @@
 - `POST /api/books`
 - `PUT /api/books/:idBook`
 - `DELETE /api/books/:idBook`
+- `GET /api/public/books/:idBook`
+- `GET /api/public/books`

@@ -9,43 +9,7 @@ import {
 } from "./utils.js";
 import { app } from "./../src/app/app.js";
 import { logger } from "../src/app/logging.js";
-
-describe("test prisma create ", () => {
-  afterEach(async () => {
-    await prisma.book.deleteMany({
-      where: {
-        title: "test",
-      },
-    });
-    await prisma.category.deleteMany({
-      where: {
-        categoryName: "test",
-      },
-    });
-  });
-
-  test("should ", async () => {
-    const book = await prisma.book.create({
-      data: {
-        title: "test",
-        author: "sy",
-        totalQty: 10,
-        availableQty: 10,
-        description: "desc",
-        categories: {
-          create: {
-            categoryName: "test",
-          },
-        },
-      },
-      include: {
-        categories: true,
-      },
-    });
-
-    console.log(book);
-  });
-});
+import fs from "fs";
 
 describe("create book api POST /api/books", () => {
   beforeAll(async () => {
@@ -281,7 +245,7 @@ describe("get book api GET /api/public/books/:idBook", () => {
     const book = await createBook();
     const result = await supertest(app).get("/api/public/books/");
 
-    expect(result.status).toBe(401);
+    expect(result.status).toBe(200);
     // expect(result.body.data.title).toBe("test");
   });
 });
@@ -307,5 +271,57 @@ describe("search books api GET /api/public/books", () => {
     );
     expect(books.status).toBe(200);
     console.info(books.body);
+  });
+});
+
+describe("upload file image to create book post /api/books/", () => {
+  beforeAll(async () => {
+    await createAdmin();
+  });
+  afterEach(async () => {
+    await deleteAllBook();
+  });
+  afterAll(async () => {
+    await deleteAllUsers();
+  });
+
+  it("should ", async () => {
+    // await createAdmin();
+    // await deleteAllBook();
+    // await deleteAllUsers()
+  });
+
+  it("should can upload", async () => {
+    const imageBuffer = await fs.promises.readFile("./test/Capture.png");
+
+    const book = await supertest(app)
+      .post("/api/books/")
+      .set("Authorization", "test")
+      .field("title", "test")
+      .field("author", "test")
+      .field("totalQty", 1)
+      .field("description", "test")
+      .attach("image", imageBuffer, "image.js");
+
+    expect(book.status).toBe(200);
+    console.log(book.body.data.image);
+    await fs.promises.rm("." + book.body.data.image);
+  });
+  it("should cant upload", async () => {
+    const imageBuffer = await fs.promises.readFile("./test/Capture.png");
+    // const imageBuffer = await fs.promises.readFile("./test/book.test.js");
+
+    const book = await supertest(app)
+      .post("/api/books/")
+      .set("Authorization", "test")
+      .field("title", "test")
+      .field("author", "test")
+      .field("totalQty", 1)
+      .field("description", "test")
+      .attach("image", imageBuffer, "image.js");
+
+    expect(book.status).toBe(503);
+    console.log(book.body.errors);
+    // await fs.promises.rm("." + book.body.data.image);
   });
 });

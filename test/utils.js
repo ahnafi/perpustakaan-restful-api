@@ -47,6 +47,7 @@ export const createBook = async () => {
       title: "test",
       author: "sy",
       totalQty: 10,
+      category: "galaxy",
       availableQty: 10,
       description: "desc",
     },

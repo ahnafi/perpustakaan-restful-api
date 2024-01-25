@@ -7,8 +7,28 @@ import {
 } from "../validation/book-validation.js";
 import { validate } from "./../validation/validate.js";
 import { prisma } from "./../app/database.js";
+import { v4 as uuid } from "uuid";
 
-const create = async (admin, request) => {
+const saveImage = async (files) => {
+  let filesName = files.name;
+  let ext = filesName.split(".");
+  ext = ext.pop();
+
+  // file type checker
+  const imageFileTypes = ["jpg", "jpeg", "png", "svg", "webp", "heic"];
+  const checkImgTypes = imageFileTypes.includes(ext.toLowerCase());
+  if (!checkImgTypes) throw new ResponseError(503, "Error cant save image");
+
+  let imageName = uuid() + "." + ext;
+
+  await files.mv("./public/img/" + imageName, (err) => {
+    if (err) throw new ResponseError(503, "Error cant save image");
+  });
+
+  return imageName;
+};
+
+const create = async (admin, request, fileImage = null) => {
   request = validate(createBookValidation, request);
 
   if (admin.role != "ADMIN") throw new ResponseError(401, "unauthorized");
@@ -23,11 +43,18 @@ const create = async (admin, request) => {
     throw new ResponseError(400, "Title is already exist");
   }
 
+  if (fileImage) {
+    let name = await saveImage(fileImage);
+    request.image = "/public/img/" + name;
+  }
+
   return prisma.book.create({
     data: {
       title: request.title,
       author: request.author,
+      category: request.category,
       description: request.description,
+      image: request.image,
       totalQty: request.totalQty,
       availableQty: request.totalQty,
     },
@@ -35,7 +62,9 @@ const create = async (admin, request) => {
       id: true,
       title: true,
       author: true,
+      category: true,
       description: true,
+      image: true,
       totalQty: true,
       availableQty: true,
     },
@@ -62,6 +91,7 @@ const update = async (admin, idBook, request) => {
 
   if (request.title) book.title = request.title;
   if (request.author) book.author = request.author;
+  if (request.category) book.category = request.category;
   if (request.description) book.description = request.description;
   if (request.totalQty) book.totalQty = request.totalQty;
   if (request.availableQty) book.availableQty = request.availableQty;
@@ -75,6 +105,7 @@ const update = async (admin, idBook, request) => {
       id: true,
       title: true,
       author: true,
+      category: true,
       description: true,
       totalQty: true,
       availableQty: true,
@@ -111,9 +142,6 @@ const get = async (idBook) => {
     where: {
       id: idBook,
     },
-    include: {
-      categories: true,
-    },
   });
 
   if (!checkBookInDatabase) {
@@ -133,6 +161,8 @@ const search = async (request) => {
 
   if (request.title) filters.push({ title: { contains: request.title } });
   if (request.author) filters.push({ author: { contains: request.author } });
+  if (request.category)
+    filters.push({ category: { contains: request.category } });
   if (request.totalQty)
     filters.push({ totalQty: { contains: request.totalQty } });
   if (request.availableQty)
