@@ -8,6 +8,7 @@ import {
 import { validate } from "./../validation/validate.js";
 import { prisma } from "./../app/database.js";
 import { v4 as uuid } from "uuid";
+import fs from "fs";
 
 const saveImage = async (files) => {
   let filesName = files.name;
@@ -26,6 +27,11 @@ const saveImage = async (files) => {
   });
 
   return imageName;
+};
+
+const removeImage = async (imagePath) => {
+ await fs.promises.rm("." + imagePath);
+  // if (!remove) throw new ResponseError(503, "Error cant save image");
 };
 
 const create = async (admin, request, fileImage = null) => {
@@ -71,7 +77,7 @@ const create = async (admin, request, fileImage = null) => {
   });
 };
 
-const update = async (admin, idBook, request) => {
+const update = async (admin, idBook, request, fileImage = null) => {
   idBook = validate(getBookValidation, idBook);
   request = validate(updateBookValidation, request);
 
@@ -89,6 +95,12 @@ const update = async (admin, idBook, request) => {
 
   const book = {};
 
+  if (fileImage) {
+    let name = await saveImage(fileImage);
+    book.image = "/public/img/" + name;
+    if (checkBookInDatabase.image != null)
+      await removeImage(checkBookInDatabase.image);
+  }
   if (request.title) book.title = request.title;
   if (request.author) book.author = request.author;
   if (request.category) book.category = request.category;
@@ -109,6 +121,7 @@ const update = async (admin, idBook, request) => {
       description: true,
       totalQty: true,
       availableQty: true,
+      image: true,
     },
   });
 };

@@ -19,7 +19,7 @@ const update = async (req, res, next) => {
     const admin = req.user;
     const idBook = req.params.idBook;
     const request = req.body;
-    const result = await bookServices.update(admin, idBook, request);
+    const result = await bookServices.update(admin, idBook, request,req.files?.image);
     res.status(200).json({
       data: result,
     });

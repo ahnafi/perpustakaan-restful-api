@@ -1,5 +1,6 @@
 import { prisma } from "../src/app/database.js";
 import bcrypt from "bcrypt";
+import fs from "fs";
 
 export const deleteAllUsers = async () => {
   return prisma.user.deleteMany({
@@ -42,6 +43,20 @@ export const deleteAllBook = async () => {
 };
 
 export const createBook = async () => {
+  const readStream = fs.createReadStream("./test/Capture.png");
+  // Create a write stream to the destination file
+  const writeStream = fs.createWriteStream("./public/img/img.png");
+  // Pipe the read stream to the write stream
+  readStream.pipe(writeStream);
+  // Listen for the 'finish' event to know when the copying is complete
+  writeStream.on("finish", () => {
+    console.log("Image copied successfully ");
+  });
+  // Handle errors
+  writeStream.on("error", (err) => {
+    console.error("Error copying image:", err);
+  });
+
   return prisma.book.create({
     data: {
       title: "test",
@@ -50,6 +65,7 @@ export const createBook = async () => {
       category: "galaxy",
       availableQty: 10,
       description: "desc",
+      image: "/public/img/img.png",
     },
   });
 };

@@ -285,12 +285,6 @@ describe("upload file image to create book post /api/books/", () => {
     await deleteAllUsers();
   });
 
-  it("should ", async () => {
-    // await createAdmin();
-    // await deleteAllBook();
-    // await deleteAllUsers()
-  });
-
   it("should can upload", async () => {
     const imageBuffer = await fs.promises.readFile("./test/Capture.png");
 
@@ -323,5 +317,83 @@ describe("upload file image to create book post /api/books/", () => {
     expect(book.status).toBe(503);
     console.log(book.body.errors);
     // await fs.promises.rm("." + book.body.data.image);
+  });
+});
+describe("update book image", () => {
+  beforeAll(async () => {
+    await createAdmin();
+  });
+  afterEach(async () => {
+    await deleteAllBook();
+  });
+  afterAll(async () => {
+    await deleteAllUsers();
+  });
+  it("should can update book", async () => {
+    const imageBuffer = await fs.promises.readFile("./test/Capture.png");
+    // const idbook = await createBook();
+    const book = await supertest(app)
+      .put("/api/books/" + 25)
+      .set("Authorization", "test")
+      .field("title", "test")
+      .field("author", "konsol")
+      .field("totalQty", 1)
+      .field("description", "test")
+      .attach("image", imageBuffer, "image.png");
+
+    console.log(book.body);
+
+    expect(book.status).toBe(200);
+  });
+  it("should cant update book", async () => {
+    const imageBuffer = await fs.promises.readFile("./test/Capture.png");
+    const idbook = await createBook();
+    const book = await supertest(app)
+      .put("/api/books/" + idbook.id)
+      .set("Authorization", "test")
+      .field("title", "test")
+      .field("author", "konsol")
+      .field("totalQty", 1)
+      .field("description", "test")
+      .attach("image", imageBuffer, "image.docx");
+
+    console.log(book.body);
+
+    expect(book.status).toBe(503);
+  });
+  it("should cant update book no id", async () => {
+    const imageBuffer = await fs.promises.readFile("./test/Capture.png");
+    const idbook = await createBook();
+    const book = await supertest(app)
+      .put("/api/books/" + idbook.id + 1)
+      .set("Authorization", "test")
+      .field("title", "test")
+      .field("author", "konsol")
+      .field("totalQty", 1)
+      .field("description", "test")
+      .attach("image", imageBuffer, "image.docx");
+
+    console.log(book.body);
+
+    expect(book.status).toBe(404);
+  });
+});
+
+// reate admin
+describe("create admin", () => {
+  it("create admin", async () => {
+    await createAdmin();
+    console.log("admin");
+  });
+  it("rm book", async () => {
+    await deleteAllBook();
+    console.log("delete book");
+  });
+  it("delete admin", async () => {
+    await deleteAllUsers();
+  });
+  it("cretae book", async () => {
+    await createBook();
+    console.log("create book");
   });
 });
