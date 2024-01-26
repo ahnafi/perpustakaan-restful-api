@@ -30,7 +30,7 @@ const saveImage = async (files) => {
 };
 
 const removeImage = async (imagePath) => {
- await fs.promises.rm("." + imagePath);
+  await fs.promises.rm("." + imagePath);
   // if (!remove) throw new ResponseError(503, "Error cant save image");
 };
 
@@ -139,6 +139,10 @@ const remove = async (admin, idBook) => {
 
   if (!checkBookInDatabase) {
     throw new ResponseError(404, "book is not found");
+  }
+
+  if (checkBookInDatabase.image != null) {
+    await removeImage(checkBookInDatabase.image);
   }
 
   return prisma.book.delete({
