@@ -175,3 +175,8 @@
 - `DELETE /api/books/:idBook`
 - `GET /api/public/books/:idBook`
 - `GET /api/public/books`
+
+<!-- borrow -->
+ - `POST /api/users/{username}/borrows` - Pengguna dapat meminjam buku dengan menyertakan detail peminjaman.
+ - `GET /api/users/{username}/borrows` - Mendapatkan daftar peminjaman buku oleh pengguna.
+ - `PUT /api/users/{username}/borrows/{borrowId}` - Mengembalikan buku berdasarkan ID peminjaman.

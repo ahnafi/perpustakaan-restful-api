@@ -69,3 +69,11 @@ export const createBook = async () => {
     },
   });
 };
+
+export const deleteBorrow = async (idBorrow) => {
+  return prisma.borrow.delete({
+    where: {
+      id: idBorrow,
+    },
+  });
+};

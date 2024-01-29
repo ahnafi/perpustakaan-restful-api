@@ -26,7 +26,7 @@ CREATE TABLE `books` (
 -- CreateTable
 CREATE TABLE `borrows` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `idUser` VARCHAR(100) NOT NULL,
+    `username` VARCHAR(100) NOT NULL,
     `idBook` INTEGER NOT NULL,
     `borrowDate` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `returnDate` DATE NULL,
@@ -35,7 +35,7 @@ CREATE TABLE `borrows` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `borrows` ADD CONSTRAINT `borrows_idUser_fkey` FOREIGN KEY (`idUser`) REFERENCES `users`(`username`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `borrows` ADD CONSTRAINT `borrows_username_fkey` FOREIGN KEY (`username`) REFERENCES `users`(`username`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `borrows` ADD CONSTRAINT `borrows_idBook_fkey` FOREIGN KEY (`idBook`) REFERENCES `books`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

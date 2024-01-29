@@ -44,12 +44,12 @@ model Book {
 
 model Borrow {
   id         Int       @id @default(autoincrement())
-  idUser     String    @db.VarChar(100)
+  username   String    @db.VarChar(100)
   idBook     Int       @db.Int
   borrowDate DateTime  @default(now()) @db.Date
   returnDate DateTime? @db.Date
 
-  user User @relation(fields: [idUser], references: [username])
+  user User @relation(fields: [username], references: [username])
   book Book @relation(fields: [idBook], references: [id])
 
   @@map("borrows")

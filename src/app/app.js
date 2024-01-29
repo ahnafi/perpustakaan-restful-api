@@ -20,9 +20,3 @@ app.use(adminRoutes);
 
 // error handling
 app.use(errorMiddleware);
-
-// app.post("/",(req,res)=>{
-//     const file = req.files.name
-
-//     // file.mv("public", "public")
-// })
