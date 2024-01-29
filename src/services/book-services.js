@@ -30,8 +30,11 @@ const saveImage = async (files) => {
 };
 
 const removeImage = async (imagePath) => {
-  await fs.promises.rm("." + imagePath);
-  // if (!remove) throw new ResponseError(503, "Error cant save image");
+  try {
+    await fs.promises.rm("." + imagePath);
+  } catch (error) {
+    throw new ResponseError(503, "Error removing image", error.message);
+  }
 };
 
 const create = async (admin, request, fileImage = null) => {
@@ -96,10 +99,10 @@ const update = async (admin, idBook, request, fileImage = null) => {
   const book = {};
 
   if (fileImage) {
-    let name = await saveImage(fileImage);
-    book.image = "/public/img/" + name;
     if (checkBookInDatabase.image != null)
       await removeImage(checkBookInDatabase.image);
+    let name = await saveImage(fileImage);
+    book.image = "/public/img/" + name;
   }
   if (request.title) book.title = request.title;
   if (request.author) book.author = request.author;

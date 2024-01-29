@@ -17,6 +17,8 @@ model User {
   token    String? @db.VarChar(100)
   role     Role    @default(USER)
 
+  borrows Borrow[]
+
   @@map("users")
 }
 
@@ -35,5 +37,20 @@ model Book {
   totalQty     Int     @default(0) // Jumlah total buku (termasuk yang sedang dipinjam)
   availableQty Int     @default(0) // Jumlah buku yang tersedia untuk dipinjam
 
+  borrows Borrow[]
+
   @@map("books")
+}
+
+model Borrow {
+  id         Int       @id @default(autoincrement())
+  idUser     String    @db.VarChar(100)
+  idBook     Int       @db.Int
+  borrowDate DateTime  @default(now()) @db.Date
+  returnDate DateTime? @db.Date
+
+  user User @relation(fields: [idUser], references: [username])
+  book Book @relation(fields: [idBook], references: [id])
+
+  @@map("borrows")
 }

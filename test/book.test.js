@@ -295,10 +295,11 @@ describe("upload file image to create book post /api/books/", () => {
       .field("author", "test")
       .field("totalQty", 1)
       .field("description", "test")
-      .attach("image", imageBuffer, "image.js");
+      .attach("image", imageBuffer, "image.jpg");
 
-    expect(book.status).toBe(200);
+    console.log(book.body);
     console.log(book.body.data.image);
+    expect(book.status).toBe(200);
     await fs.promises.rm("." + book.body.data.image);
   });
   it("should cant upload", async () => {
@@ -331,9 +332,9 @@ describe("update book image", () => {
   });
   it("should can update book", async () => {
     const imageBuffer = await fs.promises.readFile("./test/Capture.png");
-    // const idbook = await createBook();
+    const idbook = await createBook();
     const book = await supertest(app)
-      .put("/api/books/" + 25)
+      .put("/api/books/" + idbook.id)
       .set("Authorization", "test")
       .field("title", "test")
       .field("author", "konsol")

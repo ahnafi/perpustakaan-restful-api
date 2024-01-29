@@ -22,3 +22,20 @@ CREATE TABLE `books` (
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `borrows` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `idUser` VARCHAR(100) NOT NULL,
+    `idBook` INTEGER NOT NULL,
+    `borrowDate` DATE NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `returnDate` DATE NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `borrows` ADD CONSTRAINT `borrows_idUser_fkey` FOREIGN KEY (`idUser`) REFERENCES `users`(`username`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `borrows` ADD CONSTRAINT `borrows_idBook_fkey` FOREIGN KEY (`idBook`) REFERENCES `books`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
