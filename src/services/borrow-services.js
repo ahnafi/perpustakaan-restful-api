@@ -1,13 +1,14 @@
 // - `POST /api/users/borrows` - Pengguna dapat meminjam buku dengan menyertakan detail peminjaman.
-// - `GET /api/users/borrows` - Mendapatkan daftar peminjaman buku oleh pengguna.
-// - `PUT /api/users/borrows/{borrowId}` - Mengembalikan buku berdasarkan ID peminjaman.
+// - `GET /api/users/borrows/` - Mendapatkan daftar peminjaman buku oleh pengguna.
+// - `PUT /api/users/borrows/:borrowId` - Mengembalikan buku berdasarkan ID peminjaman.
 
 import { prisma } from "../app/database.js";
 import { validate } from "../validation/validate.js";
 import ResponseError from "../error/response-error.js";
 import { borrowValidation } from "../validation/borrow-validation.js";
+import { getUserValidation } from "../validation/user-validation.js";
 
-const borrowBook = async (username, idBook) => {
+const borrow = async (username, idBook) => {
   validate(borrowValidation, { username, idBook });
 
   const checkUserInDatabase = await prisma.user.findUnique({
@@ -39,6 +40,24 @@ const borrowBook = async (username, idBook) => {
   });
 };
 
+const get = async (username) => {
+  username = validate(getUserValidation, username);
+
+  const checkUserInDatabase = await prisma.user.findUnique({
+    where: {
+      username: username,
+    },
+    select: {
+      borrows: true,
+    },
+  });
+
+  if (!checkUserInDatabase) throw new ResponseError(404, "User is not found");
+
+  return checkUserInDatabase.borrows;
+};
+
 export default {
-  borrowBook,
+  borrow,
+  get,
 };

@@ -1,6 +1,6 @@
 import { prisma } from "../src/app/database.js";
 import bcrypt from "bcrypt";
-import fs from "fs";
+import fs, { accessSync } from "fs";
 
 export const deleteAllUsers = async () => {
   return prisma.user.deleteMany({
@@ -75,5 +75,17 @@ export const deleteBorrow = async (idBorrow) => {
     where: {
       id: idBorrow,
     },
+  });
+};
+
+export const createBorrow = async (username, idBook) => {
+  return prisma.borrow.create({
+    data: {
+      username: username,
+      idBook: idBook,
+    },
+    select:{
+      id:true
+    }
   });
 };

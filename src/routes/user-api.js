@@ -15,3 +15,4 @@ userRoutes.put("/api/users/current", userController.update);
 
 // borrow routes
 userRoutes.post("/api/users/borrows", borrowController.add);
+userRoutes.get("/api/users/borrows", borrowController.get);
