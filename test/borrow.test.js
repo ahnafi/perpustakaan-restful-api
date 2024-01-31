@@ -8,6 +8,8 @@ import {
   deleteAllUsers,
   deleteBorrow,
 } from "./utils.js";
+import { validate } from "../src/validation/validate.js";
+import { borrowValidation } from "../src/validation/borrow-validation.js";
 
 describe("borrow book api /api/users/{username}/borrows", () => {
   beforeEach(async () => {
@@ -25,6 +27,7 @@ describe("borrow book api /api/users/{username}/borrows", () => {
       .set("Authorization", "test")
       .send({
         idBook: book.id,
+        borrowDate: "2024-01-31T14:05:28.651Z",
       });
 
     console.log(borrow.body);
@@ -40,6 +43,7 @@ describe("borrow book api /api/users/{username}/borrows", () => {
       .send({
         // username: "test",
         idBook: book.id,
+        borrowDate: "2023-01-01",
       });
 
     console.log(borrow.body);
@@ -55,6 +59,7 @@ describe("borrow book api /api/users/{username}/borrows", () => {
       .send({
         // username: "testa",
         idBook: book.id + 1,
+        borrowDate: "2023-01-01",
       });
 
     console.log(borrow.body);
@@ -70,6 +75,7 @@ describe("borrow book api /api/users/{username}/borrows", () => {
     // .send({
     //   username: "testa",
     //   idBook: book.id + 1,
+    // borrowDate : "2023-01-01"
     // });
 
     console.log(borrow.body);
@@ -108,9 +114,8 @@ describe("get borrow api with user GET /api/users/borrows/", () => {
     const book = await createBook();
     const borrowId = await createBorrow(user.username, book.id);
     //
-    const borrow = await supertest(app)
-      .get("/api/users/borrows")
-      // .set("Authorization", "test");
+    const borrow = await supertest(app).get("/api/users/borrows");
+    // .set("Authorization", "test");
 
     console.log(borrow.body);
     expect(borrow.status).toBe(401);
@@ -131,5 +136,94 @@ describe("get borrow api with user GET /api/users/borrows/", () => {
     // delete
     await deleteBorrow(borrowId.id);
   });
+});
 
+describe("get time", () => {
+  // 2024-01-31T00:00:00.000Z
+  it("should can get time", () => {
+    let time = new Date();
+    // time.setMonth(12);
+    // console.log(time.getDate());
+    // console.log(time.getFullYear());
+    console.log(time);
+    // console.log(
+    //   `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`
+    // );
+    // console.log(time.getTime())
+  });
+
+  it("should test validation", () => {
+    const datevalid = validate(borrowValidation, {
+      username: "test",
+      idBook: "11",
+      borrowDate: "2024-01-31",
+    });
+    console.log(datevalid);
+  });
+});
+
+describe("can restroe book ", () => {
+  beforeEach(async () => {
+    // await createUser();
+    // await createBook();
+  });
+  afterEach(async () => {
+    await deleteAllUsers();
+    await deleteAllBook();
+  });
+
+  it("should can restroe book", async () => {
+    const user = await createUser();
+    const book = await createBook();
+    const borrowId = await createBorrow(user.username, book.id);
+    //
+    const borrow = await supertest(app)
+      .put("/api/users/borrows")
+      .set("Authorization", "test")
+      .send({
+        idBook: book.id,
+        restoreDate: "2024-01-31T14:05:28.651Z",
+      });
+
+    console.log(borrow.body);
+    expect(borrow.status).toBe(200);
+    // delete
+    await deleteBorrow(borrowId.id);
+  });
+  it("should cant restroe book karena bukan user", async () => {
+    const user = await createUser();
+    const book = await createBook();
+    const borrowId = await createBorrow(user.username, book.id);
+    //
+    const borrow = await supertest(app)
+      .put("/api/users/borrows")
+      // .set("Authorization", "test")
+      .send({
+        idBook: book.id,
+        restoreDate: "2024-01-31",
+      });
+
+    console.log(borrow.body);
+    expect(borrow.status).toBe(401);
+    // delete
+    await deleteBorrow(borrowId.id);
+  });
+  it("should cant restroe book karena buku tidak ada", async () => {
+    const user = await createUser();
+    const book = await createBook();
+    const borrowId = await createBorrow(user.username, book.id);
+    //
+    const borrow = await supertest(app)
+      .put("/api/users/borrows")
+      .set("Authorization", "test")
+      .send({
+        idBook: book.id+1,
+        restoreDate: "2024-01-31",
+      });
+
+    console.log(borrow.body);
+    expect(borrow.status).toBe(401);
+    // delete
+    await deleteBorrow(borrowId.id);
+  });
 });

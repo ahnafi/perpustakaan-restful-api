@@ -83,9 +83,10 @@ export const createBorrow = async (username, idBook) => {
     data: {
       username: username,
       idBook: idBook,
+      borrowDate: new Date(),
     },
-    select:{
-      id:true
-    }
+    select: {
+      id: true,
+    },
   });
 };
