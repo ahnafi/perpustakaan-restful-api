@@ -1,7 +1,3 @@
-// - `POST /api/users/borrows` - Pengguna dapat meminjam buku dengan menyertakan detail peminjaman.
-// - `GET /api/users/borrows/` - Mendapatkan daftar peminjaman buku oleh pengguna.
-// - `PUT /api/users/borrows/:borrowId` - Mengembalikan buku berdasarkan ID peminjaman.
-
 import { prisma } from "../app/database.js";
 import { validate } from "../validation/validate.js";
 import ResponseError from "../error/response-error.js";
@@ -32,6 +28,17 @@ const borrow = async (username, idBook, borrowDate) => {
 
   if (!checkBookInDatabase) throw new ResponseError(404, "book is not found");
   if (!checkUserInDatabase) throw new ResponseError(404, "user is not found");
+  if (checkBookInDatabase.availableQty == 0)
+    throw new ResponseError(404, "the book is not available");
+
+  await prisma.book.update({
+    where: {
+      id: data.idBook,
+    },
+    data: {
+      availableQty: checkBookInDatabase.availableQty - 1,
+    },
+  });
 
   return prisma.borrow.create({
     data: {
@@ -87,6 +94,18 @@ const restore = async (username, idBook, restoreDate) => {
     where: {
       username: data.username,
       idBook: data.idBook,
+    },
+  });
+
+  if (!checkBorrowInDatabase)
+    throw new ResponseError("There are no books borrowed");
+
+  await prisma.book.update({
+    data: {
+      availableQty: checkBookInDatabase.availableQty + 1,
+    },
+    where: {
+      id: data.idBook,
     },
   });
 

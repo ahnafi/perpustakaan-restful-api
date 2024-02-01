@@ -4,7 +4,7 @@
 
 - `POST /api/books`
 
-  - AUTHORIZATION
+  - AUTHORIZATION - admin
 
   body
 
@@ -12,10 +12,16 @@
   {
     "title": "title",
     "author": "string",
-    "description": "string 250",
+    "description": "string 250", //optional
+    "category": "action", //optional
     "totalQty": 123
   }
   ```
+
+  file
+
+  - image (optional)
+    - type ["jpg", "jpeg", "png", "svg", "webp", "heic"]
 
   SUCCESS 200
 
@@ -26,6 +32,8 @@
       "title": "book is the",
       "author": "book is the",
       "description": "book is the",
+      "category": "action",
+      "image": "/public/img/name.jpg",
       "totalQty": 123,
       "availableQty": 123
     }
@@ -44,7 +52,7 @@
 
 - `PUT /api/books/:idBook`
 
-  - AUTHORIZATION
+  - AUTHORIZATION - admin
 
   - PARAMS = idBook : number
 
@@ -56,10 +64,16 @@
     "title": "book is the",
     "author": "book is the",
     "description": "book is the",
+    "category": "action",
     "totalQty": 123,
     "availableQty": 123
   }
   ```
+
+  file
+
+  - image (optional)
+    - type ["jpg", "jpeg", "png", "svg", "webp", "heic"]
 
   SUCCESS 200
 
@@ -70,6 +84,8 @@
       "title": "book is the",
       "author": "book is the",
       "description": "book is the",
+      "category": "action",
+      "image": "/public/img/name.jpg",
       "totalQty": 123,
       "availableQty": 123
     }
@@ -88,7 +104,7 @@
 
 - `DELETE /api/books/:idBook`
 
-  - AUTHORIZATION
+  - AUTHORIZATION - admin
 
   - PARAMS = idBook : number
 
@@ -123,6 +139,8 @@
       "title": "book is the",
       "author": "book is the",
       "description": "book is the",
+      "category": "action",
+      "image": "/public/img/name.jpg",
       "totalQty": 123,
       "availableQty": 123
     }
@@ -160,6 +178,8 @@
         "title": "book is the",
         "author": "book is the",
         "description": "book is the",
+        "category": "action",
+        "image": "/public/img/name.jpg",
         "totalQty": 123,
         "availableQty": 123
       },
@@ -168,6 +188,8 @@
         "title": "book is the",
         "author": "book is the",
         "description": "book is the",
+        "category": "action",
+        "image": "/public/img/name.jpg",
         "totalQty": 123,
         "availableQty": 123
       }

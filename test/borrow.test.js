@@ -10,6 +10,7 @@ import {
 } from "./utils.js";
 import { validate } from "../src/validation/validate.js";
 import { borrowValidation } from "../src/validation/borrow-validation.js";
+import { prisma } from "../src/app/database.js";
 
 describe("borrow book api /api/users/{username}/borrows", () => {
   beforeEach(async () => {
@@ -187,6 +188,8 @@ describe("can restroe book ", () => {
 
     console.log(borrow.body);
     expect(borrow.status).toBe(200);
+    const show = await prisma.book.findFirst({ where: { id: book.id } });
+    console.log(show)
     // delete
     await deleteBorrow(borrowId.id);
   });
@@ -217,12 +220,12 @@ describe("can restroe book ", () => {
       .put("/api/users/borrows")
       .set("Authorization", "test")
       .send({
-        idBook: book.id+1,
+        idBook: book.id + 1,
         restoreDate: "2024-01-31",
       });
 
     console.log(borrow.body);
-    expect(borrow.status).toBe(401);
+    expect(borrow.status).toBe(404);
     // delete
     await deleteBorrow(borrowId.id);
   });
